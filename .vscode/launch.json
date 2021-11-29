@@ -10,7 +10,7 @@
             "name": "Launch Current File",
             "request": "launch",
             "mainClass": "${file}",
-            "vmArgs": "--add-modules javafx.controls.javafx.fxml"
+            "vmArgs": "--module-path \"/usr/share/openjfx/lib/\" --add-modules javafx.controls,javafx.fxml"
         },
         {
             "type": "java",
@@ -18,7 +18,7 @@
             "request": "launch",
             "mainClass": "pobj.pinboard.editor.EditorMain",
             "projectName": "PinBoard",
-            "vmArgs": "--add-modules javafx.controls.javafx.fxml"
+            "vmArgs": "--module-path \"/usr/share/openjfx/lib/\" --add-modules javafx.controls,javafx.fxml"
         },
         {
             "type": "java",
