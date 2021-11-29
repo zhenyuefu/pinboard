@@ -4,3 +4,5 @@
 /bin/
 .classpath
 *.xml
+.idea
+*.iml
