@@ -1,0 +1,32 @@
+{
+    // 使用 IntelliSense 了解相关属性。 
+    // 悬停以查看现有属性的描述。
+    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "type": "java",
+            "name": "Launch Current File",
+            "request": "launch",
+            "mainClass": "${file}",
+            "vmArgs": "--add-modules javafx.controls.javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Launch EditorMain",
+            "request": "launch",
+            "mainClass": "pobj.pinboard.editor.EditorMain",
+            "projectName": "PinBoard",
+            "vmArgs": "--add-modules javafx.controls.javafx.fxml"
+        },
+        {
+            "type": "java",
+            "name": "Launch TestDocument",
+            "request": "launch",
+            "mainClass": "pobj.pinboard.test.TestDocument",
+            "projectName": "PinBoard",
+            "vmArgs": "--module-path \"/usr/share/openjfx/lib/\" --add-modules javafx.controls,javafx.fxml"
+        }
+    ]
+}

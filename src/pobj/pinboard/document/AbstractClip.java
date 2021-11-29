@@ -1,26 +1,11 @@
 package pobj.pinboard.document;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-public class ClipRect implements Clip {
+public abstract class AbstractClip implements Clip {
 
-    private double left, top, right, bottom;
-    private Color color;
-
-    public ClipRect(double left, double top, double right, double bottom, Color color) {
-        this.left = left;
-        this.top = top;
-        this.right = right;
-        this.bottom = bottom;
-        this.color = color;
-    }
-
-    @Override
-    public void draw(GraphicsContext ctx) {
-        ctx.setFill(color);
-        ctx.fillRect(left, top, right, bottom);
-    }
+    protected double left, top, right, bottom;
+    protected Color color;
 
     @Override
     public double getTop() {
@@ -60,7 +45,11 @@ public class ClipRect implements Clip {
 
     @Override
     public boolean isSelected(double x, double y) {
-        return (left < x && right > x && top < y && bottom > y);
+        double cx = (left + right) / 2;
+        double cy = (top + bottom) / 2;
+        double rx = (right - left) / 2;
+        double ry = (bottom - top) / 2;
+        return (((x - cx) / rx) * ((x - cx) / rx) + ((y - cy) / ry) * ((y - cy) / ry) <= 1);
     }
 
     @Override
@@ -73,8 +62,4 @@ public class ClipRect implements Clip {
         return color;
     }
 
-    @Override
-    public Clip copy() {
-        return new ClipRect(left, top, right, bottom, color);
-    }
 }
