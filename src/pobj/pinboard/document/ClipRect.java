@@ -19,7 +19,7 @@ public class ClipRect implements Clip {
     @Override
     public void draw(GraphicsContext ctx) {
         ctx.setFill(color);
-        ctx.fillRect(left, top, right, bottom);
+        ctx.fillRect(left, top, right-left, bottom-top);
     }
 
     @Override
