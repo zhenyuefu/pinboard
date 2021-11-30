@@ -7,12 +7,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pobj.pinboard.document.Board;
-import pobj.pinboard.editor.tools.Tool;
-import pobj.pinboard.editor.tools.ToolEllipse;
-import pobj.pinboard.editor.tools.ToolMouse;
-import pobj.pinboard.editor.tools.ToolRect;
+import pobj.pinboard.editor.tools.*;
+
+import java.io.File;
 
 public class EditorWindow implements EditorInterface {
 
@@ -81,6 +81,21 @@ public class EditorWindow implements EditorInterface {
             setCurrentTool(new ToolEllipse());
             statusBar.setText(currentTool.getName(this));
         });
+
+        imgButton.setOnAction(actionEvent -> {
+            FileChooser fc = new FileChooser();
+            fc.setTitle("Open Image");
+            fc.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("All Images", "*.*"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
+                new FileChooser.ExtensionFilter("GIF", "*.gif"),
+                new FileChooser.ExtensionFilter("BMP", "*.bmp"),
+                new FileChooser.ExtensionFilter("PNG", "*.png")
+            );
+            File file = fc.showOpenDialog(stage);
+            setCurrentTool(new ToolImage(file));
+
+            });
 
         canvas.setOnMousePressed(event -> currentTool.press(this, event));
 

@@ -4,22 +4,29 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public interface Clip {
-	// Drawing
-	public void draw(GraphicsContext ctx);
-	
-	// Geometry	
-	public double getTop();
-	public double getLeft();
-	public double getBottom();
-	public double getRight();
-	public void setGeometry(double left, double top, double right, double bottom);
-	public void move(double x, double y);
-	public boolean isSelected(double x, double y);
+    // Drawing
+    public void draw(GraphicsContext ctx);
 
-	// Colors
-	public void setColor(Color c);
-	public Color getColor();
+    // Geometry
+    public double getTop();
 
-	// Cloning
-	public Clip copy();
+    public double getLeft();
+
+    public double getBottom();
+
+    public double getRight();
+
+    public void setGeometry(double left, double top, double right, double bottom);
+
+    public void move(double x, double y);
+
+    public boolean isSelected(double x, double y);
+
+    public Color getColor();
+
+    // Colors
+    public void setColor(Color c);
+
+    // Cloning
+    public Clip copy();
 }
