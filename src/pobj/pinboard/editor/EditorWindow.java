@@ -18,7 +18,8 @@ public class EditorWindow implements EditorInterface {
 
     private Stage stage;
     private Board board = new Board();
-    private Tool currentTool = new ToolMouse();
+    private Tool currentTool = new ToolSelection();
+    private Selection selection = new Selection();
 
     public EditorWindow(Stage stage) {
         this.stage = stage;
@@ -57,7 +58,10 @@ public class EditorWindow implements EditorInterface {
         Button elipsesButton = new Button("Elipses");
 
         Button imgButton = new Button("Img...");
-        toolbar.getItems().addAll(boxButton, elipsesButton, imgButton);
+
+        Button selectButton = new Button("Select");
+
+        toolbar.getItems().addAll(boxButton, elipsesButton, imgButton, selectButton);
 
         // Canvas
         Canvas canvas = new Canvas(800, 600);
@@ -85,19 +89,22 @@ public class EditorWindow implements EditorInterface {
         imgButton.setOnAction(actionEvent -> {
             FileChooser fc = new FileChooser();
             fc.setTitle("Open Image");
-            fc.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("All Images", "*.*"),
-                new FileChooser.ExtensionFilter("JPG", "*.jpg"),
-                new FileChooser.ExtensionFilter("GIF", "*.gif"),
-                new FileChooser.ExtensionFilter("BMP", "*.bmp"),
-                new FileChooser.ExtensionFilter("PNG", "*.png")
-            );
+            fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("All Images", "*.*"),
+                new FileChooser.ExtensionFilter("JPG", "*.jpg"), new FileChooser.ExtensionFilter("GIF", "*.gif"),
+                new FileChooser.ExtensionFilter("BMP", "*.bmp"), new FileChooser.ExtensionFilter("PNG", "*.png"));
             File file = fc.showOpenDialog(stage);
             setCurrentTool(new ToolImage(file));
+        });
 
-            });
+        selectButton.setOnAction(actionEvent -> {
+            setCurrentTool(new ToolSelection());
+            statusBar.setText(currentTool.getName(this));
+        });
 
-        canvas.setOnMousePressed(event -> currentTool.press(this, event));
+        canvas.setOnMousePressed(event -> {
+            currentTool.press(this, event);
+            currentTool.drawFeedback(this, canvas.getGraphicsContext2D());
+        });
 
         canvas.setOnMouseDragged(event -> {
             currentTool.drag(this, event);
@@ -107,6 +114,7 @@ public class EditorWindow implements EditorInterface {
         canvas.setOnMouseReleased(event -> {
             currentTool.release(this, event);
             board.draw(canvas.getGraphicsContext2D());
+            currentTool.drawFeedback(this, canvas.getGraphicsContext2D());
         });
 
         Scene scene = new Scene(vbox);
@@ -127,7 +135,7 @@ public class EditorWindow implements EditorInterface {
 
     @Override
     public Selection getSelection() {
-        return null;
+        return selection;
     }
 
     @Override
