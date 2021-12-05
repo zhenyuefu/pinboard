@@ -7,15 +7,14 @@ import pobj.pinboard.document.Board;
 import pobj.pinboard.document.ClipRect;
 import pobj.pinboard.editor.EditorInterface;
 
-public class ToolRect implements Tool{
-    private double left,right,top,bottom;
-    private double x,y;
-
+public class ToolRect implements Tool {
+    private double left, right, top, bottom;
+    private double x, y;
 
     @Override
     public void press(EditorInterface i, MouseEvent e) {
-        x=e.getX();
-        y=e.getY();
+        x = e.getX();
+        y = e.getY();
         left = e.getX();
         top = e.getY();
         right = e.getX();
@@ -24,17 +23,17 @@ public class ToolRect implements Tool{
 
     @Override
     public void drag(EditorInterface i, MouseEvent e) {
-        if (e.getX()>x) {
+        if (e.getX() > x) {
             right = e.getX();
             left = x;
-        }else {
+        } else {
             right = x;
             left = e.getX();
         }
-        if (e.getY()>y) {
+        if (e.getY() > y) {
             top = y;
             bottom = e.getY();
-        }else {
+        } else {
             bottom = y;
             top = e.getY();
         }
@@ -43,15 +42,15 @@ public class ToolRect implements Tool{
     @Override
     public void release(EditorInterface i, MouseEvent e) {
         Board board = i.getBoard();
-        board.getContents().add(new ClipRect(left,top,right,bottom,Color.BLUE));
+        board.getContents().add(new ClipRect(left, top, right, bottom, Color.SILVER));
     }
 
     @Override
     public void drawFeedback(EditorInterface i, GraphicsContext gc) {
         Board board = i.getBoard();
         board.draw(gc);
-        gc.setStroke(Color.BLUE);
-        gc.strokeRect(left,top,right-left,bottom-top);
+        gc.setStroke(Color.SILVER);
+        gc.strokeRect(left, top, right - left, bottom - top);
     }
 
     @Override

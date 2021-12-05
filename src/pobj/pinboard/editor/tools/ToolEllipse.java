@@ -11,7 +11,8 @@ public class ToolEllipse implements Tool {
     private double left, right, top, bottom;
     private double x, y;
 
-    @Override public void press(EditorInterface i, MouseEvent e) {
+    @Override
+    public void press(EditorInterface i, MouseEvent e) {
         x = e.getX();
         y = e.getY();
         left = e.getX();
@@ -20,7 +21,8 @@ public class ToolEllipse implements Tool {
         bottom = e.getY();
     }
 
-    @Override public void drag(EditorInterface i, MouseEvent e) {
+    @Override
+    public void drag(EditorInterface i, MouseEvent e) {
         if (e.getX() > x) {
             right = e.getX();
             left = x;
@@ -37,19 +39,22 @@ public class ToolEllipse implements Tool {
         }
     }
 
-    @Override public void release(EditorInterface i, MouseEvent e) {
+    @Override
+    public void release(EditorInterface i, MouseEvent e) {
         Board board = i.getBoard();
-        board.getContents().add(new ClipEllipse(left, top, right, bottom, Color.LAWNGREEN));
+        board.getContents().add(new ClipEllipse(left, top, right, bottom, Color.DARKCYAN));
     }
 
-    @Override public void drawFeedback(EditorInterface i, GraphicsContext gc) {
+    @Override
+    public void drawFeedback(EditorInterface i, GraphicsContext gc) {
         Board board = i.getBoard();
         board.draw(gc);
-        gc.setStroke(Color.LAWNGREEN);
+        gc.setStroke(Color.DARKCYAN);
         gc.strokeOval(left, top, right - left, bottom - top);
     }
 
-    @Override public String getName(EditorInterface editor) {
+    @Override
+    public String getName(EditorInterface editor) {
         return "Filled ellipse tool";
     }
 }
