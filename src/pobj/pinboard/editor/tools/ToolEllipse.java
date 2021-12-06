@@ -42,14 +42,14 @@ public class ToolEllipse implements Tool {
     @Override
     public void release(EditorInterface i, MouseEvent e) {
         Board board = i.getBoard();
-        board.getContents().add(new ClipEllipse(left, top, right, bottom, Color.DARKCYAN));
+        board.getContents().add(new ClipEllipse(left, top, right, bottom, i.getCurrentColor()));
     }
 
     @Override
     public void drawFeedback(EditorInterface i, GraphicsContext gc) {
         Board board = i.getBoard();
         board.draw(gc);
-        gc.setStroke(Color.DARKCYAN);
+        gc.setStroke(i.getCurrentColor());
         gc.strokeOval(left, top, right - left, bottom - top);
     }
 

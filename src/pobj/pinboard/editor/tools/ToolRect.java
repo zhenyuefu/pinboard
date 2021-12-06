@@ -42,14 +42,15 @@ public class ToolRect implements Tool {
     @Override
     public void release(EditorInterface i, MouseEvent e) {
         Board board = i.getBoard();
-        board.getContents().add(new ClipRect(left, top, right, bottom, Color.SILVER));
+        board.getContents().add(new ClipRect(left, top, right, bottom, i.getCurrentColor()));
     }
 
     @Override
     public void drawFeedback(EditorInterface i, GraphicsContext gc) {
         Board board = i.getBoard();
         board.draw(gc);
-        gc.setStroke(Color.SILVER);
+
+        gc.setStroke(i.getCurrentColor());
         gc.strokeRect(left, top, right - left, bottom - top);
     }
 
