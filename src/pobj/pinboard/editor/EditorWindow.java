@@ -13,6 +13,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import pobj.pinboard.document.Board;
 import pobj.pinboard.document.Clip;
+import pobj.pinboard.document.ClipGroup;
 import pobj.pinboard.editor.tools.*;
 
 import java.io.File;
@@ -23,7 +24,7 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
 
     private Stage stage;
     private Board board = new Board();
-    private MenuItem copyItem, pasteItem, deleteItem;
+    private MenuItem copyItem, pasteItem, deleteItem, groupItem, ungroupItem;
 
     private Color currentColor = Color.DARKCYAN;
     private Rectangle currentRect;
@@ -75,7 +76,7 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
         });
 
         pasteItem = new MenuItem("Paste");
-        pasteItem.setDisable(true);
+        clipboardChanged();
         pasteItem.setAccelerator(new KeyCodeCombination(KeyCode.V, KeyCombination.SHORTCUT_DOWN));
         pasteItem.setOnAction(actionEvent -> {
             if (Clipboard.getInstance().isEmpty()) {
@@ -94,7 +95,54 @@ public class EditorWindow implements EditorInterface, ClipboardListener {
             board.removeClip(selection.getContents());
             board.draw(canvas.getGraphicsContext2D());
         });
-        editMenu.getItems().addAll(copyItem, pasteItem, deleteItem);
+
+        groupItem = new MenuItem("Group");
+        groupItem
+            .setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN, KeyCombination.ALT_DOWN));
+        groupItem.setOnAction(actionEvent -> {
+            if (selection.getContents().isEmpty()) {
+                return;
+            }
+            ClipGroup cgroup = new ClipGroup();
+            selection.getContents().forEach(c -> {
+                cgroup.addClip(c);
+                board.removeClip(c);
+            });
+            board.addClip(cgroup);
+            selection.clear();
+            selection.getContents().add(cgroup);
+            board.draw(canvas.getGraphicsContext2D());
+            selection.drawFeedback(canvas.getGraphicsContext2D());
+        });
+
+        ungroupItem = new MenuItem("Ungroup");
+        ungroupItem.setAccelerator(new KeyCodeCombination(KeyCode.G, KeyCombination.SHORTCUT_DOWN,
+            KeyCombination.ALT_DOWN, KeyCombination.SHIFT_DOWN));
+        ungroupItem.setOnAction(actionEvent -> {
+            if (selection.getContents().isEmpty()) {
+                return;
+            }
+            System.out.println(selection.getContents());
+            List<Clip> listTmp = new ArrayList<>(selection.getContents());
+            selection.getContents().forEach(b -> {
+                if (b instanceof ClipGroup) {
+                    ClipGroup cgroup = (ClipGroup)b;
+                    cgroup.getClips().forEach(c -> {
+                        board.addClip(c);
+                        listTmp.add(c);
+                    });
+                    board.removeClip(cgroup);
+                    listTmp.remove(cgroup);
+                }
+            });
+            selection.clear();
+            selection.getContents().addAll(listTmp);
+            System.out.println(selection.getContents());
+            board.draw(canvas.getGraphicsContext2D());
+            selection.drawFeedback(canvas.getGraphicsContext2D());
+        });
+
+        editMenu.getItems().addAll(copyItem, pasteItem, deleteItem, groupItem, ungroupItem);
         // Tools Menu
         Menu toolsMenu = new Menu("Tools");
         menuBar.getMenus().addAll(fileMenu, editMenu, toolsMenu);
