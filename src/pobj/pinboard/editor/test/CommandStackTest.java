@@ -1,6 +1,8 @@
 package pobj.pinboard.editor.test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -21,7 +23,7 @@ public class CommandStackTest extends CommandTest {
 	public void test() {
 		assertTrue(editor.getUndoStack().isUndoEmpty());
 		assertTrue(editor.getUndoStack().isRedoEmpty());
-		
+
 		// add
 		CommandAdd cmd1 = new CommandAdd(editor, rect1);
 		cmd1.execute();
@@ -30,7 +32,7 @@ public class CommandStackTest extends CommandTest {
 		assertTrue(editor.getBoard().getContents().contains(rect1));
 		assertFalse(editor.getUndoStack().isUndoEmpty());
 		assertTrue(editor.getUndoStack().isRedoEmpty());
-		
+
 		// add
 		CommandAdd cmd2 = new CommandAdd(editor, rect2);
 		cmd2.execute();
@@ -40,7 +42,7 @@ public class CommandStackTest extends CommandTest {
 		assertTrue(editor.getBoard().getContents().contains(rect2));
 		assertFalse(editor.getUndoStack().isUndoEmpty());
 		assertTrue(editor.getUndoStack().isRedoEmpty());
-	
+
 		// move
 		CommandMove cmd3 = new CommandMove(editor, rect1, 1000., 2000.);
 		cmd3.execute();
@@ -54,7 +56,7 @@ public class CommandStackTest extends CommandTest {
 		assertEquals(1110., rect1.getRight(), 0.);
 		assertEquals(2200., rect1.getTop(), 0.);
 		assertEquals(2220., rect1.getBottom(), 0.);
-		
+
 		// undo move
 		editor.getUndoStack().undo();
 		assertEquals(2, editor.getBoard().getContents().size());
@@ -87,5 +89,5 @@ public class CommandStackTest extends CommandTest {
 		assertFalse(editor.getUndoStack().isUndoEmpty());
 		assertTrue(editor.getUndoStack().isRedoEmpty());
 	}
-	
+
 }
